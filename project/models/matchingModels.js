@@ -11,6 +11,6 @@ const matchingSchema = mongoose.Schema({
     goal: { type: Number, required: true }
 })
 
-const Matching = new mongoose.model('sales', matchingSchema);
+const Matching = new mongoose.model('matching', matchingSchema);
 
 module.exports =  Matching ;

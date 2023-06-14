@@ -10,6 +10,6 @@ const fundRaiserSchema = mongoose.Schema({
 
 })
 
-const FundRaiser = new mongoose.model('sales', fundRaiserSchema);
+const FundRaiser = new mongoose.model('donatores', fundRaiserSchema);
 
 module.exports = FundRaiser;

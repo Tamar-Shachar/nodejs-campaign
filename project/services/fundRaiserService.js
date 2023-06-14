@@ -1,4 +1,4 @@
-const fundRaiserRepository  = require('../repositories/fundRaiserRepo');
+const fundRaiserRepository  = require('../repositories/fundRaiserService');
 
 class FundRaiserService {
 

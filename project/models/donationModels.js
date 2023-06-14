@@ -8,6 +8,6 @@ const donationSchema = mongoose.Schema({
 
 })
 
-const Donation = new mongoose.model('sales', donationSchema);
+const Donation = new mongoose.model('donations', donationSchema);
 
 module.exports = Donation;

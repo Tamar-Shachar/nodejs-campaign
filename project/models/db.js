@@ -3,14 +3,14 @@ const logger = require('../logger/logger');
 
 const connect = () => {
 
-    const url = process.env.MONGO_CONNECTION_STRING;
-    logger.info("process.env.MONGO_CONNECTION_STRING :::" + process.env.MONGO_CONNECTION_STRING);
+    const url = process.env.DATABASE_URL;
+    logger.info("process.env.DATABASE_URL :::" + url);
 
     mongoose.connect(url, {
-        useNewUrlParser: true,
-        useFindAndModify: true,
-        useUnifiedTopology: true,
-        useCreateIndex: true,
+        // useNewUrlParser: true,
+        // useFindAndModify: false,
+        // useUnifiedTopology: true,
+        // useCreateIndex: true,
     })
 
     mongoose.connection.once("open", async () => {
