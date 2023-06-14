@@ -1,33 +1,32 @@
 const express = require('express');
 const router = express.Router();
+const groupService = require('../services/groupService');
 
-const matching = [{ id: "1", name: "TLV", members: 3, director:{name:"",},dateEnd:"",goal:22,}, { id: "2", name: "NJ", members: 5 }]
+// const fundRaiseres = [{ id: "1", firstname: "TLV",lastname:"ikkuj",phone:"89796", matchingId: 3,goal:222},{ id: "1", firstname: "TLV",lastname:"ikkuj",phone:"89796", matchingId: 3,goal:222}]
 //get all
-router.get('/', (req, res) => {
-    res.json(flights);
+router.get('/', async(req, res) => {
+    res.json(await groupService.getGroup());
+})
+router.get('/:matchingId', async(req, res) => {
+    res.json(await groupService.getGroupById(req.params.matchingId));
 })
 
-router.post('/', addOrUpdate, (req, res) => {
-    //calculate the id of the new object
-    //push to server
+router.post('/',  async(req, res) => {
+    await groupService.createGroup(req.body);
     res.json('item added succesfully');
 })
 
-router.put('/:flightId', addOrUpdate, (req, res) => {
-    //find the updated element
-    //update the element
+router.put('/:matchingId',  async(req, res) => {
+    await fundRaiserService.updateFundRaiser(req.body);
     res.json('item updated succesfully');
 })
 
-router.delete('/:flightId', (req, res) => {
-    res.end('deleted' + req.params.flightId);
-    //flights.splice(/)
-})
+// router.delete('/:matchingId', async(req, res) => {
+//     await fundRaiserService.deleteFundRaiser(req.params.matchingId);
+//     res.end('deleted' + req.params.matchingId);
+    
+// })
 
-function addOrUpdate(req, res, next) {
-    console.log('something new or updated arrived');
-    //some common code for both post an put
-    next();//seperate code for post and put
-}
+
 
 module.exports = router;

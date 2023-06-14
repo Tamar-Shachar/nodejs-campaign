@@ -1,21 +1,19 @@
 const express = require('express');
 const router = express.Router();
+const donationService = require('../services/donationService');
 
-const donations = [{ id: "1", amount: 200, date: Date.now(), donater: 1 },{ id: "2", amount: 100, date: Date.now(), donater: 2 }]
-//get all
-router.get('/:id/donations', (req, res) => {
-    res.json(donations);
+
+router.get('/:fundRaiserId/donations', async(req, res) => {
+    res.json(await donationService.getDonation(req.params.fundRaiserId));
 })
-router.get('/:donatoresId/donations/:donationId', (req, res) => {
+router.get('/:fundRaiserId/donations/:donationId', async(req, res) => {
     //find both ids
-    res.json();
+    res.json(await donationService.getDonation(req.params.fundRaiserId,req.params.donationId));
 })
 
-router.post('/', (req, res) => {
-    //calculate the id of the new object
-    //push to server
+router.post('/', async(req, res) => {
+    await donationService.createDonation(req.body)
     res.json('item added succesfully');
 })
-
 
 module.exports = router;
