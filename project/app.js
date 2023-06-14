@@ -1,8 +1,9 @@
+const express = require('express');
 const swaggerUi = require('swagger-ui-express')
 const swaggerFile = require('./swagger_output.json')
 const router = require('./routes/donations')
 
-const express = require('express');
+
 require('dotenv').config();
 //const logger = require('./middlewares/logger');
 const groups = require('./routes/groups');
@@ -21,7 +22,7 @@ app.use(express.json());
 
 app.use('/api/groups', groups);
 app.use('/donations', donations);
-app.use('/api', swaggerUi.serve, swaggerUi.setup(swaggerFile))
+app.use('/api', swaggerUi.serve, swaggerUi.setup(swaggerFile));
 app.use('/api/fundRaiseres', fundRaiseres);
 app.use('/api/matching', matching);
 
