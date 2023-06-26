@@ -23,6 +23,23 @@ const handleErrors = (err, req, res, next) => {
     console.error('An error occurred:', err);
     res.status(500).json({ error: 'Internal server error' });
 };
+/**
+ * @swagger
+ * tags:
+ *   name: Campaigns
+ *   description: API endpoints for managing campaigns
+ */
+
+/**
+ * @swagger
+ * /campaigns:
+ *   get:
+ *     summary: Get all campaigns
+ *     tags: [Campaigns]
+ *     responses:
+ *       200:
+ *         description: Successful response
+ */
 
 // GET all campaigns
 router.get('/', async (req, res) => {
@@ -33,7 +50,22 @@ router.get('/', async (req, res) => {
         next(err);
     }
 });
-
+/**
+ * @swagger
+ * /campaigns/{campaignId}:
+ *   get:
+ *     summary: Get a campaign by ID
+ *     tags: [Campaigns]
+ *     parameters:
+ *       - in: path
+ *         name: campaignId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successful response
+ */
 // GET campaign by ID
 router.get('/:campaignId', async (req, res, next) => {
     try {
@@ -49,6 +81,25 @@ router.get('/:campaignId', async (req, res, next) => {
         next(err);
     }
 });
+/**
+ * @swagger
+ * /campaigns:
+ *   post:
+ *     summary: Create a new campaign
+ *     tags: [Campaigns]
+ *     requestBody:
+ *       description: Campaign object to create
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               // Specify properties of the campaign object here
+ *     responses:
+ *       200:
+ *         description: Successful response
+ */
 
 // Create a new campaign
 router.post('/', validateCampaign, async (req, res, next) => {
@@ -59,6 +110,30 @@ router.post('/', validateCampaign, async (req, res, next) => {
         next(err);
     }
 });
+/**
+ * @swagger
+ * /campaigns/{campaignId}:
+ *   put:
+ *     summary: Update a campaign by ID
+ *     tags: [Campaigns]
+ *     parameters:
+ *       - in: path
+ *         name: campaignId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       description: Campaign object to update
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               // Specify properties of the campaign object here
+ *     responses:
+ *       200:
+ *         description: Successful response
 
 // Update a campaign
 router.put('/:campaignId', validateCampaign, async (req, res, next) => {
