@@ -45,7 +45,10 @@ class FundRaiserRepository {
             data = await FundRaiser.findOne(filter);
             data.currentAmount += sum;
             await FundRaiser.updateOne(filter, data);
-            await groupRepository.updateCurAmountGroup(data.groupId,sum);
+            if(data.groupId != 0){
+                await groupRepository.updateCurAmountGroup(data.groupId,sum);
+            }
+            
         } catch (err) {
             logger.error('Error::' + err);
         }

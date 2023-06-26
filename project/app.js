@@ -1,34 +1,46 @@
 const express = require('express');
 const swaggerUi = require('swagger-ui-express')
 const swaggerFile = require('./swagger_output.json')
-const { connect } = require('../models/db');
+const { connect, disconnect } = require('./models/db');
 
 
 require('dotenv').config();
-//const logger = require('./middlewares/logger');
+const errorMiddlware = require('./middlewares/errorMiddlware');
 const groups = require('./routes/groups');
 const donations = require('./routes/donations');
 const campaign = require('./routes/campaign');
 const fundRaiseres = require('./routes/fundRaiser');
 
+const HOST_NAME = process.env.HOST_NAME | '127.0.0.1';
+const PORT = process.env.PORT | 3000;
+const BASE_URL = process.env.BASE_URL;
+const app = express({ mergeParams: true });
 
-const app = express({mergeParams: true});
 
-//app.use(express.static('pages'));//127.0.0.1:3000/pages/mySwagger.html
 app.use(express.json());
+connect();
 
 //app.use(logger('begin'));
 
-const BASE_URL = "/api/campaign/:campaignId/";
-app.use(`${BASE_URL}groups`, groups);
-app.use(`${BASE_URL}donations`, donations);
+
+// app.use(`${BASE_URL}groups`, groups);
+// app.use(`${BASE_URL}donations`, donations);
+
 // app.use('/api/campaign/:campaignId/fundRaiseres/:fundRaiseresId/donations', donations);
 // app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile));
-app.use(`${BASE_URL}group/:groupId/fundRaiseres`, fundRaiseres);
-app.use('/api/campaign', campaign);
 
-//app.use(logger('end'));//will apply this middlware only if the response was not closed before
-app.listen(3000, () => {
-    connect();
-    console.log('server is up and running')
+// app.use(`/api/fundRaiseres`, fundRaiseres);
+
+app.use(BASE_URL, campaign);
+app.use(errorMiddlware);
+
+app.listen(PORT, HOST_NAME, () => {
+    console.log('server is up and running');
+
 })
+// process.on("unhandledRejection", err => {
+//     console.log(`An error occurred: ${err.message}`);
+//     disconnect();
+//     server.close(() => process.exit(1))
+// }
+// )

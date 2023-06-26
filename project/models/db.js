@@ -7,9 +7,9 @@ const connect = () => {
     logger.info("process.env.DATABASE_URL :::" + url);
 
     mongoose.connect(url, {
-        // useNewUrlParser: true,
+        useNewUrlParser: true,
         // useFindAndModify: false,
-        // useUnifiedTopology: true,
+        useUnifiedTopology: true,
         // useCreateIndex: true,
     })
 

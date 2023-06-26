@@ -1,5 +1,5 @@
 
-const { Campaign } = require('../models/campaignModels');
+const  Campaign = require('../models/campaignModels');
 const logger = require('../logger/logger');
 
 class CampaignRepository {
@@ -16,14 +16,18 @@ class CampaignRepository {
         return campaigns;
     }
 
+   
+
     async createCampaign(campaign) {
         let data = {};
         try {
             data = await Campaign.create(campaign);
+            return data;
         } catch (err) {
             logger.error('Error::' + err);
+            return err;
         }
-        return data;
+       
     }
     async updateCampaign(campaignId, campaign) {
         let data = {};

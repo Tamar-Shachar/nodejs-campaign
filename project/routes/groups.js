@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router({mergeParams: true});
 const groupService = require('../services/groupService');
+const fundRaiseres = require('./fundRaiser');
 
-// const fundRaiseres = [{ id: "1", firstname: "TLV",lastname:"ikkuj",phone:"89796", groupId: 3,goal:222},{ id: "1", firstname: "TLV",lastname:"ikkuj",phone:"89796", groupId: 3,goal:222}]
-//get all
 router.get('/', async (req, res) => {
     res.json(await groupService.getGroups(req.params.campaignId));
 })
@@ -31,7 +30,7 @@ router.delete('/:groupId', async (req, res) => {
     res.end('deleted' + req.params.groupId);
 
 })
-
-
+const BASE_URL = '/:groupId';
+router.use(`${BASE_URL}/fundRaisers`, fundRaiseres);
 
 module.exports = router;

@@ -1,6 +1,9 @@
 const express = require('express');
-const router = express.Router({mergeParams: true});
+const router = express.Router({ mergeParams: true });
 const campaignService = require('../services/campaignService');
+const groups = require('./groups');
+const donations = require('./donations');
+const fundRaiseres = require('./fundRaiser');
 
 // const fundRaiseres = [{ id: "1", firstname: "TLV",lastname:"ikkuj",phone:"89796", campaignId: 3,goal:222},{ id: "1", firstname: "TLV",lastname:"ikkuj",phone:"89796", campaignId: 3,goal:222}]
 //get all
@@ -20,6 +23,9 @@ router.put('/:campaignId', async (req, res) => {
     await campaignService.updateCampaign(req.params.campaignId, req.body);
     res.json('item updated succesfully');
 })
-
+const BASE_URL = '/:campaignId';
+router.use(`${BASE_URL}/groups`, groups);
+router.use(`${BASE_URL}/donations`, donations);
+router.use(`${BASE_URL}/fundRaisers`, fundRaiseres);
 
 module.exports = router;

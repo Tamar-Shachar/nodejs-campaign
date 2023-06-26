@@ -1,6 +1,6 @@
 const Group = require('../models/groupModels');
 const logger = require('../logger/logger');
-const campaignRepository = require('../repositories/campaignRepo')
+
 
 class GroupRepository {
 

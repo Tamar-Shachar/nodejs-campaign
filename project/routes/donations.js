@@ -3,10 +3,10 @@ const router = express.Router({mergeParams: true});
 const donationService = require('../services/donationService');
 
 
-router.get('/:fundRaiserId/donations', async(req, res) => {
+router.get('/', async(req, res) => {
     res.json(await donationService.getDonations(req.params.fundRaiserId));
 })
-router.get('/:fundRaiserId/donations/:donationId', async(req, res) => {
+router.get('/:donationId', async(req, res) => {
     //find both ids
     res.json(await donationService.getDonationById(req.params.fundRaiserId,req.params.donationId));
 })
