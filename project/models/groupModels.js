@@ -15,7 +15,8 @@ const groupSchema = mongoose.Schema({
     },
     members: {
         type: Number,
-        required: true
+        required: true,
+        default: 0 
     },
     target: {
         type: Number,
@@ -23,7 +24,8 @@ const groupSchema = mongoose.Schema({
     },
     currentAmount: {
         type: Number,
-        required: true
+        required: true,
+        default: 0 
     }
 })
 

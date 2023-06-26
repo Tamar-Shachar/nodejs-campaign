@@ -3,16 +3,16 @@ const router = express.Router({ mergeParams: true });
 const campaignService = require('../services/campaignService');
 const groups = require('./groups');
 const donations = require('./donations');
-const fundRaiseres = require('./fundRaiser');
+
 
 // Validation middleware
 const validateCampaign = (req, res, next) => {
     const { body } = req;
 
     // Perform validation checks on the campaign data
-    if (!body.name || !body.startDate || !body.endDate) {
-        return res.status(400).json({ error: 'Invalid campaign data' });
-    }
+    // if (!body.name || !body.startDate || !body.endDate) {
+    //     return res.status(400).json({ error: 'Invalid campaign data' });
+    // }
 
     // Validation passed, continue to the next middleware or route handler
     next();
@@ -134,6 +134,7 @@ router.post('/', validateCampaign, async (req, res, next) => {
  *     responses:
  *       200:
  *         description: Successful response
+ * */
 
 // Update a campaign
 router.put('/:campaignId', validateCampaign, async (req, res, next) => {
@@ -148,9 +149,9 @@ router.put('/:campaignId', validateCampaign, async (req, res, next) => {
 
 // Mount sub-routers
 const BASE_URL = '/:campaignId';
-router.use(`${ BASE_URL }` / groups, groups);
-router.use(`${ BASE_URL } `/ donations, donations);
-router.use(`${ BASE_URL }` / fundRaisers, fundRaiseres);
+router.use(`${ BASE_URL }/groups`, groups);
+router.use(`${ BASE_URL }/donations`, donations);
+
 
 // Error handling middleware (catch-all)
 router.use(handleErrors);

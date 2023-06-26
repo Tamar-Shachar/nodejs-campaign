@@ -5,23 +5,23 @@ const groupRepository = require('../repositories/groupRepo')
 class FundRaiserRepository {
 
 
-    async getFundRaiserById(fundRaiserId) {
-        const fundRaisers = await FundRaiser.find({ id: fundRaiserId });
+    async getFundRaiserById(groupId, fundRaiserId) {
+        const fundRaisers = await FundRaiser.find({ groupId: groupId, id: fundRaiserId });
         console.log('fundRaisers:::', fundRaisers);
         return fundRaisers;
     }
 
-    async getFundRaisers() {
-        const fundRaisers = await FundRaiser.find({});
+    async getFundRaisers(groupId) {
+        const fundRaisers = await FundRaiser.find({ groupId: groupId });
         console.log('fundRaisers:::', fundRaisers);
         return fundRaisers;
     }
 
-    async createFundRaiser(groupId,fundRaiser) {
+    async createFundRaiser(fundRaiser) {
         let data = {};
         try {
             data = await FundRaiser.create(fundRaiser);
-            groupRepository.updateMembersGroup(groupId);
+            groupRepository.updateMembersGroup(fundRaiser.groupId);
         } catch (err) {
             logger.error('Error::' + err);
         }
@@ -46,20 +46,21 @@ class FundRaiserRepository {
             data = await FundRaiser.findOne(filter);
             data.currentAmount += sum;
             await FundRaiser.updateOne(filter, data);
-            if(data.groupId != 0){
-                await groupRepository.updateCurAmountGroup(data.groupId,sum);
+            if (data.groupId != 0) {
+                await groupRepository.updateCurAmountGroup(data.groupId, sum);
             }
-            
+
         } catch (err) {
             logger.error('Error::' + err);
         }
         return data;
     }
 
-    async deleteFundRaiser(fundRaiserId) {
+    async deleteFundRaiser(groupId, fundRaiserId) {
         let data = {};
         try {
             data = await FundRaiser.deleteOne({ id: fundRaiserId });
+            // groupRepository.updateMembersGroup(groupId);
         } catch (err) {
             logger.error('Error::' + err);
         }

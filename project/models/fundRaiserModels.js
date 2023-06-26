@@ -19,7 +19,7 @@ const fundRaiserSchema = mongoose.Schema({
     groupId: {
         type: String,
         required: true,
-        default: 0
+        // default: 0
     },
     target: {
         type: Number,
@@ -27,8 +27,9 @@ const fundRaiserSchema = mongoose.Schema({
     },
     currentAmount: {
         type: Number,
-        required: true
-    },
+        required: true,
+        default: 0
+    }
 
 })
 
