@@ -52,6 +52,20 @@ class GroupRepository {
         return data;
     }
 
+    async updateMembersGroup(groupId, sum) {
+        let data = {};
+        let filter = { id: groupId };
+        try {
+            data = await Group.findOne(filter);
+            data.members++;
+            await Group.updateOne(filter, data);
+            // await campaignRepository.updateCurAmountCampaign(data.campaignId,sum);
+        } catch (err) {
+            logger.error('Error::' + err);
+        }
+        return data;
+    }
+
     async deleteGroup(campaignId, groupId) {
         let data = {};
         try {

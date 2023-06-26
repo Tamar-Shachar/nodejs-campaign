@@ -1,69 +1,83 @@
+const express = require('express');
+const router = express.Router({ mergeParams: true });
+const campaignService = require('../services/campaignService');
+const groups = require('./groups');
+const donations = require('./donations');
+const fundRaiseres = require('./fundRaiser');
 
-const  Campaign = require('../models/campaignModels');
-const logger = require('../logger/logger');
+// Validation middleware
+const validateCampaign = (req, res, next) => {
+    const { body } = req;
 
-class CampaignRepository {
-    
-    async getCampaignById(campaignId) {
-        const campaigns = await Campaign.find({ id: campaignId });
-        console.log('campaigns:::', campaigns);
-        return campaigns;
+    // Perform validation checks on the campaign data
+    if (!body.name || !body.startDate || !body.endDate) {
+        return res.status(400).json({ error: 'Invalid campaign data' });
     }
 
-    async getCampaigns() {
-        const campaigns = await Campaign.find({});
-        console.log('campaigns:::', campaigns);
-        return campaigns;
+    // Validation passed, continue to the next middleware or route handler
+    next();
+};
+
+// Error handling middleware
+const handleErrors = (err, req, res, next) => {
+    console.error('An error occurred:', err);
+    res.status(500).json({ error: 'Internal server error' });
+};
+
+// GET all campaigns
+router.get('/', async (req, res) => {
+    try {
+        const campaigns = await campaignService.getCampaigns();
+        res.json(campaigns);
+    } catch (err) {
+        next(err);
     }
+});
 
-   
+// GET campaign by ID
+router.get('/:campaignId', async (req, res, next) => {
+    try {
+        const campaignId = req.params.campaignId;
+        const campaign = await campaignService.getCampaignById(campaignId);
 
-    async createCampaign(campaign) {
-        let data = {};
-        try {
-            data = await Campaign.create(campaign);
-            return data;
-        } catch (err) {
-            logger.error('Error::' + err);
-            return err;
+        if (!campaign) {
+            return res.status(404).json({ error: 'Campaign not found' });
         }
-       
+
+        res.json(campaign);
+    } catch (err) {
+        next(err);
     }
-    async updateCampaign(campaignId, campaign) {
-        let data = {};
-        let filter = { id: campaignId };
-        try {
-            data = await Campaign.updateOne(filter, campaign);
-        } catch (err) {
-            logger.error('Error::' + err);
-        }
-        return data;
+});
+
+// Create a new campaign
+router.post('/', validateCampaign, async (req, res, next) => {
+    try {
+        await campaignService.createCampaign(req.body);
+        res.json('Item added successfully');
+    } catch (err) {
+        next(err);
     }
+});
 
-    async updateCurAmountCampaign(campaignId, sum) {
-        let data = {};
-        let filter = { id: campaignId };
-        try {
-            data = await Campaign.findOne(filter);
-            data.currentAmount += sum;
-            await Campaign.updateOne(filter, data);
-        } catch (err) {
-            logger.error('Error::' + err);
-        }
-        return data;
+// Update a campaign
+router.put('/:campaignId', validateCampaign, async (req, res, next) => {
+    try {
+        const campaignId = req.params.campaignId;
+        await campaignService.updateCampaign(campaignId, req.body);
+        res.json('Item updated successfully');
+    } catch (err) {
+        next(err);
     }
+});
 
-    // async deleteCampaign(campaignId) {
-    //     let data = {};
-    //     try {
-    //         data = await Campaign.deleteOne({ id: campaignId });
-    //     } catch (err) {
-    //         logger.error('Error::' + err);
-    //     }
-    //     return { status: `${data.deletedCount > 0 ? true : false}` };
-    // }
+// Mount sub-routers
+const BASE_URL = '/:campaignId';
+router.use(`${ BASE_URL }` / groups, groups);
+router.use(`${ BASE_URL }`/ donations, donations);
+router.use(`${ BASE_URL }` / fundRaisers, fundRaiseres);
 
+// Error handling middleware (catch-all)
+router.use(handleErrors);
 
-}
-
-module.exports = new CampaignRepository();
+module.exports = router;

@@ -17,10 +17,11 @@ class FundRaiserRepository {
         return fundRaisers;
     }
 
-    async createFundRaiser(fundRaiser) {
+    async createFundRaiser(groupId,fundRaiser) {
         let data = {};
         try {
             data = await FundRaiser.create(fundRaiser);
+            groupRepository.updateMembersGroup(groupId);
         } catch (err) {
             logger.error('Error::' + err);
         }
