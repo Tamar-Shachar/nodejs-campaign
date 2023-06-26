@@ -1,4 +1,4 @@
-const fundRaiserRepository  = require('../repositories/fundRaiserService');
+const fundRaiserRepository  = require('../repositories/fundRaiserRepo');
 
 class FundRaiserService {
 
@@ -8,15 +8,15 @@ class FundRaiserService {
         return await fundRaiserRepository.getFundRaiserById(fundRaiserId);
     }
 
-    async getFundRaiser() {
-        return await fundRaiserRepository.getFundRaiser();
+    async getFundRaisers() {
+        return await fundRaiserRepository.getFundRaisers();
     }
 
     async createFundRaiser(fundRaiser) {
         return await fundRaiserRepository.createFundRaiser(fundRaiser);
     }
 
-    async updateFundRaiser(fundRaiser) {
+    async updateFundRaiser(fundRaiserId,fundRaiser) {
         return await fundRaiserRepository.updateFundRaiser(fundRaiser);
     }
 

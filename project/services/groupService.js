@@ -1,27 +1,27 @@
-const groupRepository  = require('../repositories/groupRepo');
+const groupRepository = require('../repositories/groupRepo');
 
 class GroupService {
 
-    constructor() {}
+    constructor() { }
 
-    async getGroupById(groupId) {
-        return await groupRepository.getGroupById(groupId);
+    async getGroupById(campaignId, groupId) {
+        return await groupRepository.getGroupById(campaignId, groupId);
     }
 
-    async getGroup() {
-        return await groupRepository.getGroup();
+    async getGroups(campaignId) {
+        return await groupRepository.getGroups(campaignId);
     }
 
-    async createGroup(group) {
-        return await groupRepository.createGroup(group);
+    async createGroup( group) {
+        return await groupRepository.createGroup( group);
     }
 
-    async updateGroup(group) {
-        return await groupRepository.updateGroup(group);
+    async updateGroup(campaignId, groupId, group) {
+        return await groupRepository.updateGroup(campaignId, groupId, group);
     }
 
-    async deleteGroup(groupId) {
-        return await groupRepository.deleteGroup(groupId);
+    async deleteGroup(campaignId, groupId) {
+        return await groupRepository.deleteGroup(campaignId, groupId);
     }
 
 }

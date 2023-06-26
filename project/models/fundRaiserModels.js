@@ -4,9 +4,10 @@ const fundRaiserSchema = mongoose.Schema({
     id: { type: String, required: true },
     firstname: { type: String, required: true },
     lastname: { type: String, required: true },
-    phone: { type: String, required: true },
-    groupId: { type: Number, required: true },
-    goal: { type: Number, required: true }
+    phone: { type: String },
+    groupId: { type: String, required: true },
+    target: { type: Number, required: true },
+    currentAmount: { type: Number, required: true }
 
 })
 

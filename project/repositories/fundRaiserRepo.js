@@ -1,12 +1,10 @@
-const { connect } = require('../models/db');
 const FundRaiser = require('../models/fundRaiserModels');
 const logger = require('../logger/logger');
+const groupRepository = require('../repositories/groupRepo')
 
 class FundRaiserRepository {
 
-    constructor() {
-        connect();
-    }
+
     async getFundRaiserById(fundRaiserId) {
         const fundRaisers = await FundRaiser.find({ id: fundRaiserId });
         console.log('fundRaisers:::', fundRaisers);
@@ -28,10 +26,26 @@ class FundRaiserRepository {
         }
         return data;
     }
-    async updateFundRaiser(fundRaiser) {
+
+    async updateFundRaiser(fundRaiserId, fundRaiser) {
         let data = {};
+        let filter = { id: fundRaiserId };
         try {
-            data = await FundRaiser.updateOne(fundRaiser);
+            data = await FundRaiser.updateOne(filter, fundRaiser);
+        } catch (err) {
+            logger.error('Error::' + err);
+        }
+        return data;
+    }
+
+    async updateCurAmountFundRaiser(fundRaiserId, sum) {
+        let data = {};
+        let filter = { id: fundRaiserId };
+        try {
+            data = await FundRaiser.findOne(filter);
+            data.currentAmount += sum;
+            await FundRaiser.updateOne(filter, data);
+            await groupRepository.updateCurAmountGroup(data.groupId,sum);
         } catch (err) {
             logger.error('Error::' + err);
         }

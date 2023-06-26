@@ -8,8 +8,8 @@ class DonationService {
         return await donationRepository.getDonationById(fundRaiserId, donationId);
     }
 
-    async getDonation(fundRaiserId) {
-        return await donationRepository.getDonation(fundRaiserId);
+    async getDonations(fundRaiserId) {
+        return await donationRepository.getDonations(fundRaiserId);
     }
 
     async createDonation(donation) {

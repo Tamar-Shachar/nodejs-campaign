@@ -1,20 +1,17 @@
-const { connect } = require('../models/db');
-const  Group = require('../models/groupModels');
+const Group = require('../models/groupModels');
 const logger = require('../logger/logger');
+const campaignRepository = require('../repositories/campaignRepo')
 
 class GroupRepository {
 
-    constructor() {
-        connect();
-    }
-    async getGroupById(groupId) {
-        const groups = await Group.find({ id: groupId });
+    async getGroupById(campaignId, groupId) {
+        const groups = await Group.find({ campaignId: campaignId, id: groupId });
         console.log('groups:::', groups);
         return groups;
     }
 
-    async getGroups() {
-        const groups = await Group.find({});
+    async getGroups(campaignId) {
+        const groups = await Group.find({ campaignId: campaignId });
         console.log('groups:::', groups);
         return groups;
     }
@@ -23,25 +20,42 @@ class GroupRepository {
         let data = {};
         try {
             data = await Group.create(group);
+            return data;
         } catch (err) {
             logger.error('Error::' + err);
+            return err;
         }
-        return data;
+
     }
-    async updateGroup(group) {
+    async updateGroup(campaignId, groupId, group) {
         let data = {};
+        let filter = { campaignId: campaignId, id: groupId };
         try {
-            data = await Group.updateOne(group);
+            data = await Group.findOneAndUpdate(filter, group);
         } catch (err) {
             logger.error('Error::' + err);
         }
         return data;
     }
 
-    async deleteGroup(groupId) {
+    async updateCurAmountGroup(groupId, sum) {
+        let data = {};
+        let filter = { id: groupId };
+        try {
+            data = await Group.findOne(filter);
+            data.currentAmount += sum;
+            await Group.updateOne(filter, data);
+            // await campaignRepository.updateCurAmountCampaign(data.campaignId,sum);
+        } catch (err) {
+            logger.error('Error::' + err);
+        }
+        return data;
+    }
+
+    async deleteGroup(campaignId, groupId) {
         let data = {};
         try {
-            data = await Group.deleteOne({ id: groupId });
+            data = await Group.deleteOne({ campaignId: campaignId, id: groupId });
         } catch (err) {
             logger.error('Error::' + err);
         }
