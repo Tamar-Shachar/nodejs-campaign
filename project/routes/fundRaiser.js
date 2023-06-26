@@ -12,7 +12,7 @@ router.get('/:fundRaiserId', async(req, res) => {
 })
 
 router.post('/',  async(req, res) => {
-    await fundRaiserService.createFundRaiser(,req.body);
+    await fundRaiserService.createFundRaiser(req.params.groupId,req.body);
     res.json('item added succesfully');
 })
 

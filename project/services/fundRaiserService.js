@@ -12,7 +12,7 @@ class FundRaiserService {
         return await fundRaiserRepository.getFundRaisers();
     }
 
-    async createFundRaiser(fundRaiser) {
+    async createFundRaiser(groupId,fundRaiser) {
         return await fundRaiserRepository.createFundRaiser(fundRaiser);
     }
 
