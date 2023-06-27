@@ -1,5 +1,5 @@
 
-const Donation = require('../models/donationModels');
+const { Donation } = require('../models/donationModels');
 const logger = require('../logger/logger');
 const fundRaiserRepository = require('./fundRaiserRepo')
 const campaignRepository = require('../repositories/campaignRepo')
@@ -25,7 +25,7 @@ class DonationRepository {
             if (data.fundRaiserId != null) {
                 await fundRaiserRepository.updateCurAmountFundRaiser(donation.fundRaiserId, donation.amount);
             }
-            await campaignRepository.updateCurAmountCampaign(campaignId,donation.amount);
+            await campaignRepository.updateCurAmountCampaign(campaignId, donation.amount);
         } catch (err) {
             logger.error('Error::' + err);
         }

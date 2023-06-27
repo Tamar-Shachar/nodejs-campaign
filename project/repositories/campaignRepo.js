@@ -1,9 +1,9 @@
 
-const  Campaign = require('../models/campaignModels');
+const { Campaign } = require('../models/campaignModels');
 const logger = require('../logger/logger');
 
 class CampaignRepository {
-    
+
     async getCampaignById(campaignId) {
         const campaigns = await Campaign.find({ id: campaignId });
         console.log('campaigns:::', campaigns);
@@ -16,7 +16,7 @@ class CampaignRepository {
         return campaigns;
     }
 
-   
+
 
     async createCampaign(campaign) {
         let data = {};
@@ -27,7 +27,7 @@ class CampaignRepository {
             logger.error('Error::' + err);
             return err;
         }
-       
+
     }
     async updateCampaign(campaignId, campaign) {
         let data = {};

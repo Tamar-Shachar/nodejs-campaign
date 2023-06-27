@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Joi = require('joi');
 
 const campaignSchema = mongoose.Schema({
     id: {
@@ -25,7 +26,7 @@ const campaignSchema = mongoose.Schema({
         phone: {
             type: String
         },
-        email:{
+        email: {
             type: String
         }
     },
@@ -40,6 +41,24 @@ const campaignSchema = mongoose.Schema({
 
 })
 
+const campaignValidationSchema = Joi.object({
+    id: Joi.string().required(),
+    name: Joi.string().required(),
+    director: Joi.object({
+        id: Joi.string().required(),
+        firstname: Joi.string().required(),
+        lastname: Joi.string().required(),
+        phone: Joi.string(),
+        email: Joi.string()
+    }).required(),
+    dateEnd: Joi.date().required(),
+    target: Joi.number().required()
+});
+
 const Campaign = new mongoose.model('campaigns', campaignSchema);
 
-module.exports = Campaign;
+
+module.exports = {
+    Campaign,
+    campaignValidationSchema
+};

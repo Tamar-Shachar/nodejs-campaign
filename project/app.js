@@ -5,7 +5,7 @@ const { connect, disconnect } = require('./models/db');
 
 
 require('dotenv').config();
-const errorMiddlware = require('./middlewares/errorMiddlware');
+const handleErrors = require('./middlewares/errorMiddlware');
 const groups = require('./routes/groups');
 const donations = require('./routes/donations');
 const campaign = require('./routes/campaign');
@@ -32,7 +32,7 @@ connect();
 // app.use(`/api/fundRaiseres`, fundRaiseres);
 
 app.use(BASE_URL, campaign);
-app.use(errorMiddlware);
+app.use(handleErrors);
 
 app.listen(PORT, HOST_NAME, () => {
     console.log('server is up and running');

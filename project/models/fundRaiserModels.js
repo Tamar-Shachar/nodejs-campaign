@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Joi = require('joi');
 
 const fundRaiserSchema = mongoose.Schema({
     id: {
@@ -33,6 +34,19 @@ const fundRaiserSchema = mongoose.Schema({
 
 })
 
-const FundRaiser = new mongoose.model('donatores', fundRaiserSchema);
+const fundRaiserValidationSchema = Joi.object({
+    id: Joi.string().required(),
+    firstname: Joi.string().required(),
+    lastname: Joi.string().required(),
+    phone: Joi.string(),
+    groupId: Joi.string().required(),
+    target: Joi.number().required(),
+    currentAmount: Joi.number().required()
+});
 
-module.exports = FundRaiser;
+const FundRaiser = new mongoose.model('fundRaisers', fundRaiserSchema);
+module.exports = {
+    FundRaiser,
+    fundRaiserValidationSchema
+};
+

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Joi = require('joi');
 
 const donationSchema = mongoose.Schema({
     id: { type: String, required: true },
@@ -31,6 +32,21 @@ const donationSchema = mongoose.Schema({
 
 })
 
+const donationValidationSchema = Joi.object({
+    id: Joi.string().required(),
+    donator: Joi.object({
+        name: Joi.string().required(),
+        phoneNum: Joi.string(),
+        email: Joi.string()
+    }).required(),
+    amount: Joi.number().required(),
+    date: Joi.date().required(),
+    fundRaiserId: Joi.string().required()
+});
+
 const Donation = new mongoose.model('donations', donationSchema);
 
-module.exports = Donation;
+module.exports = {
+    Donation,
+    donationValidationSchema
+};

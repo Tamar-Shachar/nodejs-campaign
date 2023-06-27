@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Joi = require('joi');
 
 const groupSchema = mongoose.Schema({
     id: {
@@ -29,6 +30,18 @@ const groupSchema = mongoose.Schema({
     }
 })
 
+const groupValidationSchema = Joi.object({
+    id: Joi.string().required(),
+    campaignId: Joi.string().required(),
+    name: Joi.string().required(),
+    members: Joi.number().required(),
+    target: Joi.number().required(),
+    currentAmount: Joi.number().required()
+});
+
 const Group = new mongoose.model('groups', groupSchema);
 
-module.exports = Group;
+module.exports = {
+    Group,
+    groupValidationSchema
+};

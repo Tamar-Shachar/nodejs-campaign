@@ -1,36 +1,74 @@
 const express = require('express');
-const router = express.Router({mergeParams: true});
+const router = express.Router({ mergeParams: true });
 const groupService = require('../services/groupService');
-const fundRaiseres = require('./fundRaiser');
+const fundRaisers = require('./fundRaiser');
+const { groupValidationSchema } = require("../models/groupModels");
+const errorMiddlware = require('../middlewares/errorMiddlware');
 
-router.get('/', async (req, res) => {
-    res.json(await groupService.getGroups(req.params.campaignId));
-})
-router.get('/:groupId', async (req, res) => {
-    res.json(await groupService.getGroupById(req.params.campaignId, req.params.groupId));
-})
+// Validation middleware
+const validateGroup = (req, res, next) => {
+    const { error } = groupValidationSchema.validate(req.body);
+    if (error) {
+        return res.status(400).json({ error: error.details[0].message });
+    }
+    next();
+};
 
-router.post('/', async (req, res) => {
+
+// GET all groups
+router.get('/', async (req, res, next) => {
+    try {
+        const groups = await groupService.getGroups(req.params.campaignId);
+        res.json(groups);
+    } catch (err) {
+        next(err);
+    }
+});
+
+// GET group by ID
+router.get('/:groupId', async (req, res, next) => {
+    try {
+        const group = await groupService.getGroupById(req.params.campaignId, req.params.groupId);
+        res.json(group);
+    } catch (err) {
+        next(err);
+    }
+});
+
+// Create a new group
+router.post('/', validateGroup, async (req, res, next) => {
     try {
         await groupService.createGroup(req.body);
-        res.json('item added succesfully');
+        res.json('Item added successfully');
+    } catch (err) {
+        next(err);
     }
-    catch {
-        res.json("error")
+});
+
+// Update a group
+router.put('/:groupId', validateGroup, async (req, res, next) => {
+    try {
+        await groupService.updateGroup(req.params.groupId, req.body);
+        res.json('Item updated successfully');
+    } catch (err) {
+        next(err);
     }
-})
+});
 
-router.put('/:groupId', async (req, res) => {
-    await groupService.updateGroup(req.params.groupId, req.body);
-    res.json('item updated succesfully');
-})
+// Delete a group
+router.delete('/:groupId', async (req, res, next) => {
+    try {
+        await groupService.deleteGroup(req.params.groupId);
+        res.json('Item deleted successfully');
+    } catch (err) {
+        next(err);
+    }
+});
 
-router.delete('/:groupId', async (req, res) => {
-    await groupService.deleteGroup(req.params.groupId);
-    res.end('deleted' + req.params.groupId);
-
-})
 const BASE_URL = '/:groupId';
-router.use(`${BASE_URL}/fundRaisers`, fundRaiseres);
+router.use(`${BASE_URL}/fundRaisers`, fundRaisers);
+
+// Error handling middleware (catch-all)
+router.use(errorMiddlware);
 
 module.exports = router;

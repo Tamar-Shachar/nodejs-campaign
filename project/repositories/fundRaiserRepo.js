@@ -1,4 +1,4 @@
-const FundRaiser = require('../models/fundRaiserModels');
+const { FundRaiser } = require('../models/fundRaiserModels');
 const logger = require('../logger/logger');
 const groupRepository = require('../repositories/groupRepo')
 
@@ -21,7 +21,7 @@ class FundRaiserRepository {
         let data = {};
         try {
             data = await FundRaiser.create(fundRaiser);
-            groupRepository.updateMembersGroup(fundRaiser.groupId);
+            groupRepository.updateMembersGroup(fundRaiser.groupId, "add");
         } catch (err) {
             logger.error('Error::' + err);
         }
@@ -60,7 +60,7 @@ class FundRaiserRepository {
         let data = {};
         try {
             data = await FundRaiser.deleteOne({ id: fundRaiserId });
-            // groupRepository.updateMembersGroup(groupId);
+            groupRepository.updateMembersGroup(groupId, "remove");
         } catch (err) {
             logger.error('Error::' + err);
         }
