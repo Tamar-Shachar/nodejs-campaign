@@ -37,6 +37,11 @@ const campaignSchema = mongoose.Schema({
     target: {
         type: Number,
         required: true
+    },
+    currentAmount: {
+        type: Number,
+        required: true,
+        default: 0
     }
 
 })
@@ -52,7 +57,8 @@ const campaignValidationSchema = Joi.object({
         email: Joi.string()
     }).required(),
     dateEnd: Joi.date().required(),
-    target: Joi.number().required()
+    target: Joi.number().required(),
+    currentAmount: Joi.number().required()
 });
 
 const Campaign = new mongoose.model('campaigns', campaignSchema);

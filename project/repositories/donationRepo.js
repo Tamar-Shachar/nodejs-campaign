@@ -6,15 +6,21 @@ const campaignRepository = require('../repositories/campaignRepo')
 
 class DonationRepository {
 
+    constructor() {
+        this.DonationError = new Error("Donation dosent exist")
+        this.DonationError.status = 404;
+    }
+    
     async getDonationById(donationId, fundRaiserId) {
-        const donations = await Donation.find({ id: donationId, fundRaiser: fundRaiserId });
-        console.log('donations:::', donations);
-        return donations;
+        const donation = await Donation.find({ id: donationId, fundRaiser: fundRaiserId });
+        if (donation.length == 0) {
+            throw this.DonationError;
+        }
+        return donation;
     }
 
     async getDonations(fundRaiserId) {
         const donations = await Donation.find({ fundRaiser: fundRaiserId });
-        console.log('donations:::', donations);
         return donations;
     }
 
@@ -29,6 +35,7 @@ class DonationRepository {
         } catch (err) {
             logger.error('Error::' + err);
         }
+        logger.info(`donation:${donation},  Date:${Date.now()}`)
         return data;
     }
 }

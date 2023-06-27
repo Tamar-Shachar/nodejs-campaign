@@ -16,6 +16,22 @@ const validateDonation = (req, res, next) => {
 
 
 // GET all donations
+/**
+ * @swagger
+ * /campaigns/{campaignId}/donations:
+ *   get:
+ *     summary: Retrieve all donations for a campaign
+ *     parameters:
+ *       - in: path
+ *         name: campaignId
+ *         required: true
+ *         description: ID of the campaign
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ */
 router.get('/', async (req, res, next) => {
     try {
         const donations = await donationService.getDonations(req.params.fundRaiserId);
@@ -26,6 +42,28 @@ router.get('/', async (req, res, next) => {
 });
 
 // GET donation by ID
+/**
+ * @swagger
+ * /campaigns/{campaignId}/donations/{donationId}:
+ *   get:
+ *     summary: Retrieve a donation by ID
+ *     parameters:
+ *       - in: path
+ *         name: campaignId
+ *         required: true
+ *         description: ID of the campaign
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: donationId
+ *         required: true
+ *         description: ID of the donation
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ */
 router.get('/:donationId', async (req, res, next) => {
     try {
         const donation = await donationService.getDonationById(
@@ -39,6 +77,30 @@ router.get('/:donationId', async (req, res, next) => {
 });
 
 // Create a new donation
+/**
+ * @swagger
+ * /campaigns/{campaignId}/donations:
+ *   post:
+ *     summary: Create a new donation for a campaign
+ *     parameters:
+ *       - in: path
+ *         name: campaignId
+ *         required: true
+ *         description: ID of the campaign
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Donation'
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ *       400:
+ *         description: Bad request
+*/
 router.post('/', validateDonation, async (req, res, next) => {
     try {
         await donationService.createDonation(req.body);

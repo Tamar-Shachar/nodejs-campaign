@@ -4,15 +4,21 @@ const logger = require('../logger/logger');
 
 class GroupRepository {
 
+    constructor() {
+        this.GroupError = new Error("Group dosent exist")
+        this.GroupError.status = 404;
+    }
+
     async getGroupById(campaignId, groupId) {
-        const groups = await Group.find({ campaignId: campaignId, id: groupId });
-        console.log('groups:::', groups);
-        return groups;
+        const group = await Group.find({ campaignId: campaignId, id: groupId });
+        if (group.length == 0) {
+            throw this.GroupError;
+        }
+        return group;
     }
 
     async getGroups(campaignId) {
         const groups = await Group.find({ campaignId: campaignId });
-        console.log('groups:::', groups);
         return groups;
     }
 

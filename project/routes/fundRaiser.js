@@ -17,6 +17,22 @@ const validateFundRaiser = (req, res, next) => {
 
 
 // GET all fundRaisers
+/**
+ * @swagger
+ * /groups/{groupId}/fundraisers:
+ *   get:
+ *     summary: Retrieve all fundraisers for a group
+ *     parameters:
+ *       - in: path
+ *         name: groupId
+ *         required: true
+ *         description: ID of the group
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ */
 router.get('/', async (req, res, next) => {
     try {
         const fundRaisers = await fundRaiserService.getFundRaisers(req.params.groupId);
@@ -27,6 +43,28 @@ router.get('/', async (req, res, next) => {
 });
 
 // GET fundRaiser by ID
+/**
+ * @swagger
+ * /groups/{groupId}/fundraisers/{fundRaiserId}:
+ *   get:
+ *     summary: Retrieve a fundraiser by ID
+ *     parameters:
+ *       - in: path
+ *         name: groupId
+ *         required: true
+ *         description: ID of the group
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: fundRaiserId
+ *         required: true
+ *         description: ID of the fundraiser
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ */
 router.get('/:fundRaiserId', async (req, res, next) => {
     try {
         const fundRaiser = await fundRaiserService.getFundRaiserById(req.params.fundRaiserId);
@@ -37,6 +75,30 @@ router.get('/:fundRaiserId', async (req, res, next) => {
 });
 
 // Create a new fundRaiser
+/**
+ * @swagger
+ * /groups/{groupId}/fundraisers:
+ *   post:
+ *     summary: Create a new fundraiser for a group
+ *     parameters:
+ *       - in: path
+ *         name: groupId
+ *         required: true
+ *         description: ID of the group
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/FundRaiser'
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ *       400:
+*         description: Bad request
+ */
 router.post('/', validateFundRaiser, async (req, res, next) => {
     try {
         await fundRaiserService.createFundRaiser(req.params.groupId, req.body);
@@ -47,6 +109,37 @@ router.post('/', validateFundRaiser, async (req, res, next) => {
 });
 
 // Update a fundRaiser
+/**
+ * @swagger
+ * /groups/{groupId}/fundraisers/{fundRaiserId}:
+ *   put:
+ *     summary: Update a fundraiser by ID
+ *     parameters:
+ *       - in: path
+ *         name: groupId
+ *         required: true
+ *         description: ID of the group
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: fundRaiserId
+ *         required: true
+ *         description: ID of the fundraiser
+ *         schema:
+ *           type: string
+*     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/FundRaiser'
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ *       400:
+ *         description: Bad request
+ */
+
 router.put('/:fundRaiserId', validateFundRaiser, async (req, res, next) => {
     try {
         await fundRaiserService.updateFundRaiser(req.params.fundRaiserId, req.body);
@@ -57,6 +150,28 @@ router.put('/:fundRaiserId', validateFundRaiser, async (req, res, next) => {
 });
 
 // Delete a fundRaiser
+/**
+ * @swagger
+ * /groups/{groupId}/fundraisers/{fundRaiserId}:
+ *   delete:
+ *     summary: Delete a fundraiser by ID
+ *     parameters:
+ *       - in: path
+ *         name: groupId
+ *         required: true
+ *         description: ID of the group
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: fundRaiserId
+ *         required: true
+ *         description: ID of the fundraiser
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ */
 router.delete('/:fundRaiserId', async (req, res, next) => {
     try {
         await fundRaiserService.deleteFundRaiser(req.params.groupId, req.params.fundRaiserId);

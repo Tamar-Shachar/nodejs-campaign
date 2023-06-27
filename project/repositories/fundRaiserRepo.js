@@ -4,16 +4,22 @@ const groupRepository = require('../repositories/groupRepo')
 
 class FundRaiserRepository {
 
+    constructor() {
+        this.FundRaiserError = new Error("FundRaiser dosent exist")
+        this.FundRaiserError.status = 404;
+    }
+
 
     async getFundRaiserById(groupId, fundRaiserId) {
-        const fundRaisers = await FundRaiser.find({ groupId: groupId, id: fundRaiserId });
-        console.log('fundRaisers:::', fundRaisers);
-        return fundRaisers;
+        const fundRaiser = await FundRaiser.find({ groupId: groupId, id: fundRaiserId });
+        if (fundRaiser.length == 0) {
+            throw this.FundRaiserError;
+        }
+        return fundRaiser;
     }
 
     async getFundRaisers(groupId) {
         const fundRaisers = await FundRaiser.find({ groupId: groupId });
-        console.log('fundRaisers:::', fundRaisers);
         return fundRaisers;
     }
 

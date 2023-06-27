@@ -16,9 +16,21 @@ const validateCampaign = (req, res, next) => {
 };
 
 // GET all campaigns
+/**
+ * @swagger
+ * /campaigns:
+ *   get:
+ *     summary: Retrieve all campaigns
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ */
 router.get('/', async (req, res, next) => {
     try {
         const campaigns = await campaignService.getCampaigns();
+        if (campaigns instanceof Error) {
+            next(err);
+        }
         res.json(campaigns);
     } catch (err) {
         next(err);
@@ -26,6 +38,24 @@ router.get('/', async (req, res, next) => {
 });
 
 // GET campaign by ID
+/**
+ * @swagger
+ * /campaigns/{campaignId}:
+ *   get:
+ *     summary: Retrieve a campaign by ID
+ *     parameters:
+ *       - in: path
+ *         name: campaignId
+ *         required: true
+ *         description: ID of the campaign
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ *       404:
+ *         description: Campaign not found
+ */
 router.get('/:campaignId', async (req, res, next) => {
     try {
         const campaignId = req.params.campaignId;
@@ -41,6 +71,23 @@ router.get('/:campaignId', async (req, res, next) => {
 });
 
 // Create a new campaign
+/**
+ * @swagger
+ * /campaigns:
+ *   post:
+ *     summary: Create a new campaign
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: 'models\campaignModels.js'
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ *       400:
+ *         description: Bad request
+ */
 router.post('/', validateCampaign, async (req, res, next) => {
     try {
         await campaignService.createCampaign(req.body);
@@ -51,6 +98,30 @@ router.post('/', validateCampaign, async (req, res, next) => {
 });
 
 // Update a campaign
+/**
+ * @swagger
+ * /campaigns/{campaignId}:
+ *   put:
+ *     summary: Update a campaign by ID
+ *     parameters:
+ *       - in: path
+ *         name: campaignId
+ *         required: true
+ *         description: ID of the campaign
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/json/campaignSchema.json/campaign'
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ *       400:
+ *         description: Bad request
+ */
 router.put('/:campaignId', validateCampaign, async (req, res, next) => {
     try {
         const campaignId = req.params.campaignId;

@@ -1,11 +1,11 @@
 const express = require('express');
-const swaggerUi = require('swagger-ui-express')
-const swaggerFile = require('./swagger_output.json')
+// const swaggerUi = require('swagger-ui-express')
+// const swaggerFile = require('./swagger_output.json')
 const { connect, disconnect } = require('./models/db');
 
 
 require('dotenv').config();
-const handleErrors = require('./middlewares/errorMiddlware');
+const errorMiddlware = require('./middlewares/errorMiddlware');
 const groups = require('./routes/groups');
 const donations = require('./routes/donations');
 const campaign = require('./routes/campaign');
@@ -31,8 +31,32 @@ connect();
 
 // app.use(`/api/fundRaiseres`, fundRaiseres);
 
+const swaggerJSDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+
+const swaggerOptions = {
+    definition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'Campaign API',
+            version: '1.0.0',
+        },
+        servers: [
+            {
+                url: '/', // Set your base URL here
+            },
+        ],
+    },
+    apis: ['./routes/*.js'], // Specify the path to your route files
+};
+
+const swaggerSpec = swaggerJSDoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+
+
 app.use(BASE_URL, campaign);
-app.use(handleErrors);
+app.use(errorMiddlware);
 
 app.listen(PORT, HOST_NAME, () => {
     console.log('server is up and running');

@@ -4,19 +4,23 @@ const logger = require('../logger/logger');
 
 class CampaignRepository {
 
+    constructor() {
+        this.CampaignError = new Error("Campaign dosent exist")
+        this.CampaignError.status = 404;
+    }
+
     async getCampaignById(campaignId) {
-        const campaigns = await Campaign.find({ id: campaignId });
-        console.log('campaigns:::', campaigns);
-        return campaigns;
+        const campaign = await Campaign.find({ id: campaignId });
+        if (campaign.length == 0) {
+            throw this.CampaignError;
+        }
+        return campaign;
     }
 
     async getCampaigns() {
         const campaigns = await Campaign.find({});
-        console.log('campaigns:::', campaigns);
         return campaigns;
     }
-
-
 
     async createCampaign(campaign) {
         let data = {};
