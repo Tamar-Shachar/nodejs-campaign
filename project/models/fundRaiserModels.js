@@ -41,7 +41,7 @@ const fundRaiserValidationSchema = Joi.object({
     phone: Joi.string(),
     groupId: Joi.string().required(),
     target: Joi.number().required(),
-    currentAmount: Joi.number().required()
+    currentAmount: Joi.number().optional()
 });
 
 const FundRaiser = new mongoose.model('fundRaisers', fundRaiserSchema);

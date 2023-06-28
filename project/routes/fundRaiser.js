@@ -92,7 +92,7 @@ router.get('/:fundRaiserId', async (req, res, next) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/FundRaiser'
+ *             type: "object"
  *     responses:
  *       200:
  *         description: Successful operation
@@ -132,7 +132,7 @@ router.post('/', validateFundRaiser, async (req, res, next) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/FundRaiser'
+ *             type: "object"
  *     responses:
  *       200:
  *         description: Successful operation

@@ -33,11 +33,13 @@ class CampaignRepository {
         }
 
     }
-    async updateCampaign(campaignId, campaign) {
+    async updateCampaign(campaignId, target) {
         let data = {};
         let filter = { id: campaignId };
         try {
-            data = await Campaign.updateOne(filter, campaign);
+            data = await Campaign.findOne(filter);
+            data.target = target;
+            await Campaign.updateOne(filter, data);
         } catch (err) {
             logger.error('Error::' + err);
         }

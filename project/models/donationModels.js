@@ -40,8 +40,8 @@ const donationValidationSchema = Joi.object({
         email: Joi.string()
     }).required(),
     amount: Joi.number().required(),
-    date: Joi.date().required(),
-    fundRaiserId: Joi.string().required()
+    date: Joi.date().optional(),
+    fundRaiserId: Joi.string().optional()
 });
 
 const Donation = new mongoose.model('donations', donationSchema);

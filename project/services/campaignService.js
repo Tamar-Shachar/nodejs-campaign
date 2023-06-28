@@ -1,8 +1,8 @@
-const campaignRepository  = require('../repositories/campaignRepo');
+const campaignRepository = require('../repositories/campaignRepo');
 
 class CampaignService {
 
-    constructor() {}
+    constructor() { }
 
     async getCampaignById(campaignId) {
         return await campaignRepository.getCampaignById(campaignId);
@@ -16,8 +16,8 @@ class CampaignService {
         return await campaignRepository.createCampaign(campaign);
     }
 
-    async updateCampaign(campaignId,campaign) {
-        return await campaignRepository.updateCampaign(campaign);
+    async updateCampaign(campaignId, target) {
+        return await campaignRepository.updateCampaign(campaignId, target);
     }
 
     // async deleteCampaign(campaignId) {

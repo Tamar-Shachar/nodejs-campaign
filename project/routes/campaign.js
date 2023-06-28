@@ -4,7 +4,8 @@ const campaignService = require('../services/campaignService');
 const groups = require('./groups');
 const donations = require('./donations');
 const errorMiddlware = require('../middlewares/errorMiddlware')
-const { campaignValidationSchema } = require("../models/campaignModels")
+const { campaignValidationSchema } = require("../models/campaignModels");
+const { getCampaignById } = require('../services/campaignService');
 
 // Validation middleware
 const validateCampaign = (req, res, next) => {
@@ -81,7 +82,7 @@ router.get('/:campaignId', async (req, res, next) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: 'models\campaignModels.js'
+ *             type: "object"
  *     responses:
  *       200:
  *         description: Successful operation
@@ -109,24 +110,37 @@ router.post('/', validateCampaign, async (req, res, next) => {
  *         required: true
  *         description: ID of the campaign
  *         schema:
- *           type: string
+ *             type: "string"
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/json/campaignSchema.json/campaign'
+ *             type: 'object'
  *     responses:
  *       200:
  *         description: Successful operation
  *       400:
  *         description: Bad request
  */
-router.put('/:campaignId', validateCampaign, async (req, res, next) => {
+router.put('/:campaignId', async (req, res, next) => {
     try {
         const campaignId = req.params.campaignId;
-        await campaignService.updateCampaign(campaignId, req.body);
-        res.json('Item updated successfully');
+        campaign = await campaignService.getCampaignById(campaignId);
+        console.log("campaign",campaign);
+        const directorId = campaign[0].director.id;
+        // campaign.then((a) => {
+        //     directorId = a.director.id;
+        //   });
+        
+        // directorId = campaign.director.id;
+        if (req.body.directorId == directorId) {
+            await campaignService.updateCampaign(campaignId, req.body.target);
+            res.json('Item updated successfully');
+        }
+        else {
+            res.status(401).send({ success: false, message: 'only director can update' });
+        }
     } catch (err) {
         next(err);
     }

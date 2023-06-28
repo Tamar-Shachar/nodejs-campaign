@@ -58,7 +58,7 @@ const campaignValidationSchema = Joi.object({
     }).required(),
     dateEnd: Joi.date().required(),
     target: Joi.number().required(),
-    currentAmount: Joi.number().required()
+    currentAmount: Joi.number().optional()
 });
 
 const Campaign = new mongoose.model('campaigns', campaignSchema);

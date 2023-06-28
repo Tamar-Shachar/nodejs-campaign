@@ -94,7 +94,7 @@ router.get('/:donationId', async (req, res, next) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Donation'
+ *             type: "object"
  *     responses:
  *       200:
  *         description: Successful operation

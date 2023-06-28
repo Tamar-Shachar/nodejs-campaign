@@ -91,7 +91,7 @@ router.get('/:groupId', async (req, res, next) => {
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Group'
+ *             type: "object"
  *     responses:
  *       200:
  *         description: Successful operation
@@ -131,7 +131,7 @@ router.post('/', validateGroup, async (req, res, next) => {
  *       content:
  *         application/json:
  *           schema:
-*             $ref: '#/components/schemas/Group'
+ *             type: "object"
  *     responses:
  *       200:
  *         description: Successful operation

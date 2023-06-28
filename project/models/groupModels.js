@@ -34,9 +34,9 @@ const groupValidationSchema = Joi.object({
     id: Joi.string().required(),
     campaignId: Joi.string().required(),
     name: Joi.string().required(),
-    members: Joi.number().required(),
+    members: Joi.number().optional(),
     target: Joi.number().required(),
-    currentAmount: Joi.number().required()
+    currentAmount: Joi.number().optional()
 });
 
 const Group = new mongoose.model('groups', groupSchema);
